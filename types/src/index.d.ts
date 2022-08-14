@@ -1,12 +1,8 @@
-interface ServerToClientEvents {
-}
+/* eslint-disable @typescript-eslint/no-empty-interface */
+interface ServerToClientEvents {}
 
-interface ClientToServerEvents {
-}
+interface ClientToServerEvents {}
 
-interface InterServerEvents {
-}
+interface InterServerEvents {}
 
-interface SocketData {
-
-}
+interface SocketData {}

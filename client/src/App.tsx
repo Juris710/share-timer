@@ -11,6 +11,8 @@ import {
 } from "@mantine/core";
 import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import { IconSun, IconMoonStars } from "@tabler/icons";
+import { Content } from "./Content";
+
 function App() {
   const preferredColorScheme = useColorScheme();
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -51,7 +53,7 @@ function App() {
             </Header>
           }
         >
-          {}
+          <Content />
         </AppShell>
       </MantineProvider>
     </ColorSchemeProvider>

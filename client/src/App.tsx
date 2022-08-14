@@ -1,34 +1,60 @@
 import React from "react";
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
-
+import {
+  MantineProvider,
+  ColorSchemeProvider,
+  ColorScheme,
+  AppShell,
+  Header,
+  Title,
+  Group,
+  ActionIcon,
+} from "@mantine/core";
+import { useColorScheme, useLocalStorage } from "@mantine/hooks";
+import { IconSun, IconMoonStars } from "@tabler/icons";
 function App() {
-  const [count, setCount] = useState(0);
-
+  const preferredColorScheme = useColorScheme();
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "share-timer-color-scheme",
+    defaultValue: preferredColorScheme,
+    getInitialValueInEffect: true,
+  });
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <ColorSchemeProvider
+      colorScheme={colorScheme}
+      toggleColorScheme={toggleColorScheme}
+    >
+      <MantineProvider
+        withNormalizeCSS
+        withGlobalStyles
+        theme={{ colorScheme }}
+      >
+        <AppShell
+          padding="md"
+          header={
+            <Header height={70} p="xs">
+              <Group position="apart" sx={{ height: "100%" }} px={20}>
+                <Title order={1}>Share Timer</Title>
+                <ActionIcon
+                  variant="default"
+                  onClick={() => toggleColorScheme()}
+                  size={30}
+                >
+                  {colorScheme === "dark" ? (
+                    <IconSun size={16} />
+                  ) : (
+                    <IconMoonStars size={16} />
+                  )}
+                </ActionIcon>
+              </Group>
+            </Header>
+          }
+        >
+          {}
+        </AppShell>
+      </MantineProvider>
+    </ColorSchemeProvider>
   );
 }
 

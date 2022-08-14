@@ -9,6 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@mantine/core": "^5.1.5",
+    "@mantine/form": "^5.1.5",
+    "@mantine/hooks": "^5.1.5",
+    "@mantine/modals": "^5.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "socket.io-client": "^4.5.1"

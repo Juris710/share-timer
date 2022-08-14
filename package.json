@@ -1,0 +1,13 @@
+{
+  "name": "share-timer",
+  "version": "1.0.0",
+  "repository": "https://github.com/Juris710/share-timer.git",
+  "author": "Juris710 <juris710.dev@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "types",
+    "client",
+    "server"
+  ]
+}

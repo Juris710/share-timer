@@ -52,10 +52,11 @@ function fetchTimerDataOrThrow(
   const data = timerDatas[timerId];
   if (data === undefined) {
     socket.emit("requestFailed", "invalid-timer-id");
-    return;
+    return undefined;
   }
   if (token !== undefined && data.token !== token) {
     socket.emit("requestFailed", "invalid-token");
+    return undefined;
   }
   return data;
 }

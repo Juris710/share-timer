@@ -46,7 +46,11 @@ export const TimerPage: React.FC = () => {
               Pause
             </Button>
             <Button
-              onClick={() => setStartTimeMs(0)}
+              onClick={() => {
+                setStartTimeMs(0);
+                setCurrentTimeMs(0);
+                setElapsedMs(0);
+              }}
               disabled={startTimeMs === 0}
             >
               Stop

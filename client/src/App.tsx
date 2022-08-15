@@ -13,7 +13,7 @@ import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import { IconSun, IconMoonStars } from "@tabler/icons";
 import { Route, Routes } from "react-router-dom";
 import { TimerPage } from "./pages/Timer";
-import { Sockets } from "./Sockets";
+import { Sockets } from "./components/Sockets";
 import { NotificationsProvider } from "@mantine/notifications";
 
 function App() {

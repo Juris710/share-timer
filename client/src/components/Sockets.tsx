@@ -7,7 +7,7 @@ import {
   elapsedMsState,
   startTimeMsState,
   timerIdState,
-} from "./recoil";
+} from "../recoil";
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
   import.meta.env.DEV ? io("http://localhost:3000") : io();

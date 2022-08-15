@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Group } from "@mantine/core";
 import { useRecoilValue } from "recoil";
 import { timerIdState, timerStateState } from "../../recoil";
-import { socket } from "../../Sockets";
+import { socket } from "../../components/Sockets";
 
 export const AdminButtons: React.FC = () => {
   const timerId = useRecoilValue(timerIdState);

@@ -6,7 +6,7 @@ import { TimerRunner } from "./Runner";
 import { FinishNotifier } from "./FinishNotifier";
 import { AdminButtons } from "./AdminButtons";
 import { useParams } from "react-router-dom";
-import { socket } from "../../Sockets";
+import { socket } from "../../components/Sockets";
 import { milliseconds2timerText } from "../../utils";
 /*
 export const timerTextState = selector({

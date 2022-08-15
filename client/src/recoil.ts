@@ -55,11 +55,23 @@ export const shouldRunTimerState = selector({
   },
 });
 
-export const timerFinishedState = selector({
-  key: "timerFinishedState",
+export const timerStateState = selector({
+  key: "timerStateState",
   get: ({ get }) => {
     const remainingMs = get(remainingMsState);
-    return remainingMs <= 0;
+    if (remainingMs <= 0) {
+      return "finished";
+    }
+    const startTimeMs = get(startTimeMsState);
+    const currentTimeMs = get(currentTimeMsState);
+    if (startTimeMs > 0 || currentTimeMs > 0) {
+      return "running";
+    }
+    const elapsedMs = get(elapsedMsState);
+    if (elapsedMs > 0) {
+      return "paused";
+    }
+    return "idle";
   },
 });
 

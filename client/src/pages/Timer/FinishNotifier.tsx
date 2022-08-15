@@ -1,15 +1,15 @@
 import { showNotification } from "@mantine/notifications";
 import React, { useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import { timerFinishedState } from "../../recoil";
+import { timerStateState } from "../../recoil";
 
 export const FinishNotifier: React.FC = () => {
-  const timerFinished = useRecoilValue(timerFinishedState);
+  const timerState = useRecoilValue(timerStateState);
   useEffect(() => {
-    if (timerFinished) {
+    if (timerState === "finished") {
       showNotification({ message: "タイマー終了" });
     }
-  }, [timerFinished]);
+  }, [timerState]);
 
   return <></>;
 };

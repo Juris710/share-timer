@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { io, Socket } from "socket.io-client";
+import { RecoilRoot } from "recoil";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = import.meta
@@ -12,6 +13,8 @@ const socket: Socket<ServerToClientEvents, ClientToServerEvents> = import.meta
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
   </React.StrictMode>
 );

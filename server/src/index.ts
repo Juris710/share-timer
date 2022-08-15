@@ -25,10 +25,6 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log(`User id ${socket.id} DISCONNECTED`);
   });
-  socket.on("ping", () => {
-    console.log("ping!");
-    setTimeout(() => socket.emit("pong"), 1000);
-  });
 });
 
 server.listen(3000, () => {

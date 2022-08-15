@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 
-export const errorCodeState = atom<ErrorCodes | undefined>({
+export const errorCodeState = atom<ErrorCode | undefined>({
   key: "errorCodeState",
   default: undefined,
 });

@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { errorCodeState } from "../recoil";
 
-const errorMessages: Record<ErrorCodes, string> = {
+const errorMessages: Record<ErrorCode, string> = {
   "invalid-timer-id": "指定されたタイマーは存在しません。",
   "invalid-token": "あなたにはこのタイマーを操作する権限がありません。",
 };

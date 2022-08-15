@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-type ErrorCodes = "invalid-timer-id" | "invalid-token";
+type ErrorCode = "invalid-timer-id" | "invalid-token";
 interface ServerToClientEvents {
   timerJoined: (
     timerId: string,
@@ -16,7 +16,7 @@ interface ServerToClientEvents {
   timerPaused: (timerId: string, elapsedMs: number) => void;
   timerResetted: (timerId: string) => void;
 
-  requestFailed: (errorCode: ErrorCodes) => void;
+  requestFailed: (errorCode: ErrorCode) => void;
 }
 
 interface ClientToServerEvents {

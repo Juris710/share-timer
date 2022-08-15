@@ -1,6 +1,11 @@
 import { atom, selector } from "recoil";
 import { milliseconds2timerText } from "./utils";
 
+export const timerIdState = atom<string | undefined>({
+  key: "timerIdState",
+  default: undefined,
+});
+
 export const startTimeMsState = atom({
   key: "startTimeMsState",
   default: 0,

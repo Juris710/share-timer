@@ -59,7 +59,11 @@ function App() {
           >
             <Sockets />
             <Routes>
-              <Route path="/" element={<TimerPage isAdmin={true} />} />
+              <Route path="/timer/:timerId" element={<TimerPage />} />
+              <Route
+                path="/timer/:timerId/admin"
+                element={<TimerPage isAdmin />}
+              />
               <Route path="*" element={<div>404</div>} />
             </Routes>
           </AppShell>

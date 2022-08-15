@@ -1,46 +1,32 @@
 import React from "react";
 import { Button, Group } from "@mantine/core";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  currentTimeMsState,
-  elapsedMsState,
-  startTimeMsState,
-  timerStateState,
-} from "../../recoil";
+import { useRecoilValue } from "recoil";
+import { timerIdState, timerStateState } from "../../recoil";
+import { socket } from "../../Sockets";
 
 export const AdminButtons: React.FC = () => {
+  const timerId = useRecoilValue(timerIdState);
   const timerState = useRecoilValue(timerStateState);
-  const [startTimeMs, setStartTimeMs] = useRecoilState(startTimeMsState);
-  const setElapsedMs = useSetRecoilState(elapsedMsState);
-  const [currentTimeMs, setCurrentTimeMs] = useRecoilState(currentTimeMsState);
+  const token = "token";
+  if (timerId === undefined) {
+    return <></>;
+  }
 
   return (
     <Group>
       <Button
-        onClick={() => {
-          setStartTimeMs(Date.now());
-        }}
+        onClick={() => socket.emit("startTimer", timerId, token)}
         disabled={timerState !== "idle" && timerState !== "paused"}
       >
         Start
       </Button>
       <Button
-        onClick={() => {
-          setElapsedMs((elapsedMs) => elapsedMs + currentTimeMs - startTimeMs);
-          setStartTimeMs(0);
-          setCurrentTimeMs(0);
-        }}
+        onClick={() => socket.emit("pauseTimer", timerId, token)}
         disabled={timerState !== "running"}
       >
         Pause
       </Button>
-      <Button
-        onClick={() => {
-          setStartTimeMs(0);
-          setCurrentTimeMs(0);
-          setElapsedMs(0);
-        }}
-      >
+      <Button onClick={() => socket.emit("resetTimer", timerId, token)}>
         Reset
       </Button>
     </Group>

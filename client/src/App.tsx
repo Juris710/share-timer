@@ -60,7 +60,7 @@ function App() {
           >
             <Sockets />
             <Routes>
-              <Route path="/" element={<TimerPage />} />
+              <Route path="/" element={<TimerPage isAdmin={true} />} />
               <Route path="*" element={<div>404</div>} />
             </Routes>
             <Button

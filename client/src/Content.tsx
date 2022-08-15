@@ -1,34 +1,46 @@
 import { Button, Center, Stack, Text } from "@mantine/core";
 import { useInterval } from "@mantine/hooks";
-import React, { useEffect, useState } from "react";
-import { milliseconds2timerText } from "./utils";
+import React, { useEffect } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  currentTimeMsState,
+  shouldRunTimerState,
+  startTimeMsState,
+  timerTextState,
+} from "./recoil";
 
-export const Content: React.FC = () => {
-  const [startMillis, setStartMillis] = useState(0);
-  const [timerText, setTimerText] = useState(milliseconds2timerText(0));
+const TimerRunner: React.FC = () => {
+  const shouldRunTimer = useRecoilValue(shouldRunTimerState);
+  const setCurrentTimeMs = useSetRecoilState(currentTimeMsState);
   const interval = useInterval(() => {
-    setTimerText(milliseconds2timerText(Date.now() - startMillis));
+    setCurrentTimeMs(Date.now());
   }, 100);
   useEffect(() => {
-    if (startMillis !== 0) {
+    if (shouldRunTimer) {
       interval.start();
     }
     return interval.stop;
-  }, [startMillis]);
+  }, [shouldRunTimer]);
+  return <></>;
+};
+
+export const Content: React.FC = () => {
+  const timerText = useRecoilValue(timerTextState);
+  const [startTimeMs, setStartTimeMs] = useRecoilState(startTimeMsState);
   return (
     <Center>
       <Stack>
+        <TimerRunner />
         <Text>{timerText}</Text>
         <Button
           onClick={() => {
-            setTimerText(milliseconds2timerText(0));
-            setStartMillis(Date.now());
+            setStartTimeMs(Date.now());
           }}
-          disabled={startMillis !== 0}
+          disabled={startTimeMs !== 0}
         >
           Start
         </Button>
-        <Button onClick={() => setStartMillis(0)} disabled={startMillis === 0}>
+        <Button onClick={() => setStartTimeMs(0)} disabled={startTimeMs === 0}>
           Stop
         </Button>
       </Stack>

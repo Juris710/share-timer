@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-interface ServerToClientEvents {}
+interface ServerToClientEvents {
+  pong: () => void;
+}
 
-interface ClientToServerEvents {}
+interface ClientToServerEvents {
+  ping: () => void;
+}
 
 interface InterServerEvents {}
 

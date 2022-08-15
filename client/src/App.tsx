@@ -8,11 +8,13 @@ import {
   Title,
   Group,
   ActionIcon,
+  Button,
 } from "@mantine/core";
 import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import { IconSun, IconMoonStars } from "@tabler/icons";
 import { Route, Routes } from "react-router-dom";
 import { TimerPage } from "./pages/Timer";
+import { socket, Sockets } from "./Sockets";
 
 function App() {
   const preferredColorScheme = useColorScheme();
@@ -54,10 +56,18 @@ function App() {
             </Header>
           }
         >
+          <Sockets />
           <Routes>
             <Route path="/" element={<TimerPage />} />
             <Route path="*" element={<div>404</div>} />
           </Routes>
+          <Button
+            onClick={() => {
+              socket.emit("ping");
+            }}
+          >
+            ping
+          </Button>
         </AppShell>
       </MantineProvider>
     </ColorSchemeProvider>

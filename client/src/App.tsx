@@ -11,7 +11,8 @@ import {
 } from "@mantine/core";
 import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import { IconSun, IconMoonStars } from "@tabler/icons";
-import { Content } from "./Content";
+import { Route, Routes } from "react-router-dom";
+import { TimerPage } from "./pages/Timer";
 
 function App() {
   const preferredColorScheme = useColorScheme();
@@ -53,7 +54,10 @@ function App() {
             </Header>
           }
         >
-          <Content />
+          <Routes>
+            <Route path="/" element={<TimerPage />} />
+            <Route path="*" element={<div>404</div>} />
+          </Routes>
         </AppShell>
       </MantineProvider>
     </ColorSchemeProvider>

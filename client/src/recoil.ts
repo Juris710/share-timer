@@ -11,6 +11,11 @@ export const durationMsState = atom({
   default: 10 * 1000,
 });
 
+export const elapsedMsState = atom({
+  key: "elapsedMsState",
+  default: 0,
+});
+
 export const currentTimeMsState = atom({
   key: "currentTimeMsState",
   default: 0,
@@ -19,22 +24,17 @@ export const currentTimeMsState = atom({
 export const remainingMsState = selector({
   key: "remainingMsState",
   get: ({ get }) => {
-    const startTimeMs = get(startTimeMsState);
-    if (startTimeMs === 0) {
-      return undefined;
-    }
     const durationMs = get(durationMsState);
     if (durationMs === 0) {
       return undefined;
     }
+    const elapsedMs = get(elapsedMsState);
+    const startTimeMs = get(startTimeMsState);
     const currentTimeMs = get(currentTimeMsState);
-    if (currentTimeMs === 0) {
-      return undefined;
+    let remainingMs = durationMs - elapsedMs;
+    if (currentTimeMs > startTimeMs) {
+      remainingMs -= currentTimeMs - startTimeMs;
     }
-    if (currentTimeMs < startTimeMs) {
-      return undefined;
-    }
-    const remainingMs = durationMs - (currentTimeMs - startTimeMs);
     return remainingMs;
   },
 });

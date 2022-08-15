@@ -8,13 +8,12 @@ import {
   Title,
   Group,
   ActionIcon,
-  Button,
 } from "@mantine/core";
 import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import { IconSun, IconMoonStars } from "@tabler/icons";
 import { Route, Routes } from "react-router-dom";
 import { TimerPage } from "./pages/Timer";
-import { socket, Sockets } from "./Sockets";
+import { Sockets } from "./Sockets";
 import { NotificationsProvider } from "@mantine/notifications";
 
 function App() {
@@ -63,13 +62,6 @@ function App() {
               <Route path="/" element={<TimerPage isAdmin={true} />} />
               <Route path="*" element={<div>404</div>} />
             </Routes>
-            <Button
-              onClick={() => {
-                socket.emit("ping");
-              }}
-            >
-              ping
-            </Button>
           </AppShell>
         </NotificationsProvider>
       </MantineProvider>

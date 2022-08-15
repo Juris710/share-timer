@@ -11,9 +11,6 @@ export const Sockets: React.FC = () => {
       return;
     }
     initialized.current = true;
-    socket.on("pong", () => {
-      alert("pong!");
-    });
   }, []);
   return <></>;
 };

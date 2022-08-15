@@ -19,25 +19,27 @@ const io = new Server<
     origin: ["http://127.0.0.1:5173"],
   },
 });
-function validateTimerId(
-  socket: Socket<
-    ClientToServerEvents,
-    ServerToClientEvents,
-    InterServerEvents,
-    SocketData
-  >,
-  timerId: string
-): boolean {
-  //TODO:validate timerId
-  // eslint-disable-next-line no-constant-condition
-  if (false) {
-    socket.emit("requestFailed", "invalid-timer-id");
-    return false;
-  }
-  return true;
-}
-
-function validateToken(
+type TimerData = {
+  startTimeMs: number;
+  elapsedMs: number;
+  durationMs: number;
+  token: string;
+};
+const timerDatas: Record<string, TimerData | undefined> = {
+  "timer-1": {
+    startTimeMs: 0,
+    elapsedMs: 0,
+    durationMs: 10 * 1000,
+    token: "token",
+  },
+  "timer-2": {
+    startTimeMs: 0,
+    elapsedMs: 0,
+    durationMs: 5 * 1000,
+    token: "token",
+  },
+};
+function fetchTimerDataOrThrow(
   socket: Socket<
     ClientToServerEvents,
     ServerToClientEvents,
@@ -45,18 +47,18 @@ function validateToken(
     SocketData
   >,
   timerId: string,
-  token: string
-): boolean {
-  //TODO:validate token
-  // eslint-disable-next-line no-constant-condition
-  if (false) {
-    socket.emit("requestFailed", "invalid-token");
-    return false;
+  token?: string
+): TimerData | undefined {
+  const data = timerDatas[timerId];
+  if (data === undefined) {
+    socket.emit("requestFailed", "invalid-timer-id");
+    return;
   }
-  return true;
+  if (token !== undefined && data.token !== token) {
+    socket.emit("requestFailed", "invalid-token");
+  }
+  return data;
 }
-let startTimeMs = 0;
-let elapsedMs = 0;
 
 io.on("connection", (socket) => {
   console.log(`User id ${socket.id} connected`);
@@ -66,47 +68,52 @@ io.on("connection", (socket) => {
 
   // client
   socket.on("joinTimer", (timerId: string) => {
-    if (!validateTimerId(socket, timerId)) {
+    const timerData = fetchTimerDataOrThrow(socket, timerId);
+    if (timerData === undefined) {
       return;
     }
     socket.join(timerId);
-    const durationMs = 10 * 1000;
-    socket.emit("timerJoined", timerId, durationMs, startTimeMs, elapsedMs);
+    socket.emit(
+      "timerJoined",
+      timerId,
+      timerData.durationMs,
+      timerData.startTimeMs,
+      timerData.elapsedMs
+    );
   });
 
   // admin
   socket.on("startTimer", (timerId: string, token: string) => {
-    if (!validateTimerId(socket, timerId)) {
+    const timerData = fetchTimerDataOrThrow(socket, timerId, token);
+    if (timerData === undefined) {
       return;
     }
-    if (!validateToken(socket, timerId, token)) {
-      return;
-    }
-    startTimeMs = Date.now();
+    timerData.startTimeMs = Date.now();
     io.sockets
       .in(timerId)
-      .emit("timerStarted", timerId, startTimeMs, elapsedMs);
+      .emit(
+        "timerStarted",
+        timerId,
+        timerData.startTimeMs,
+        timerData.elapsedMs
+      );
   });
   socket.on("pauseTimer", (timerId: string, token: string) => {
-    if (!validateTimerId(socket, timerId)) {
+    const timerData = fetchTimerDataOrThrow(socket, timerId, token);
+    if (timerData === undefined) {
       return;
     }
-    if (!validateToken(socket, timerId, token)) {
-      return;
-    }
-    elapsedMs += Date.now() - startTimeMs;
-    startTimeMs = 0;
-    io.sockets.in(timerId).emit("timerPaused", timerId, elapsedMs);
+    timerData.elapsedMs += Date.now() - timerData.startTimeMs;
+    timerData.startTimeMs = 0;
+    io.sockets.in(timerId).emit("timerPaused", timerId, timerData.elapsedMs);
   });
   socket.on("resetTimer", (timerId: string, token: string) => {
-    if (!validateTimerId(socket, timerId)) {
+    const timerData = fetchTimerDataOrThrow(socket, timerId, token);
+    if (timerData === undefined) {
       return;
     }
-    if (!validateToken(socket, timerId, token)) {
-      return;
-    }
-    startTimeMs = 0;
-    elapsedMs = 0;
+    timerData.startTimeMs = 0;
+    timerData.elapsedMs = 0;
     io.sockets.in(timerId).emit("timerResetted", timerId);
   });
 });

@@ -3,6 +3,7 @@ import { Button, Center, Stack, Text } from "@mantine/core";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { startTimeMsState, timerTextState } from "../../recoil";
 import { TimerRunner } from "./Runner";
+import { FinishNotifier } from "./FinishNotifier";
 
 export const TimerPage: React.FC = () => {
   const timerText = useRecoilValue(timerTextState);
@@ -10,6 +11,7 @@ export const TimerPage: React.FC = () => {
   return (
     <Center>
       <Stack>
+        <FinishNotifier />
         <TimerRunner />
         <Text>{timerText}</Text>
         <Button

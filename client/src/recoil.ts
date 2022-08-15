@@ -58,6 +58,17 @@ export const remainingMsState = selector({
   },
 });
 
+export const timerFinishedState = selector({
+  key: "timerFinishedState",
+  get: ({ get }) => {
+    const remainingMs = get(remainingMsState);
+    if (remainingMs === undefined) {
+      return false;
+    }
+    return remainingMs <= 0;
+  },
+});
+
 export const timerTextState = selector({
   key: "timerTextState",
   get: ({ get }) => {

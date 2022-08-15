@@ -11,25 +11,6 @@ export const durationMsState = atom({
   default: 10 * 1000,
 });
 
-export const shouldRunTimerState = selector({
-  key: "shouldRunTimerState",
-  get: ({ get }) => {
-    const durationMs = get(durationMsState);
-    if (durationMs === 0) {
-      return false;
-    }
-    const startTimeMs = get(startTimeMsState);
-    if (startTimeMs === 0) {
-      return false;
-    }
-    const remainingMs = get(remainingMsState);
-    if (remainingMs !== undefined && remainingMs <= 0) {
-      return false;
-    }
-    return true;
-  },
-});
-
 export const currentTimeMsState = atom({
   key: "currentTimeMsState",
   default: 0,
@@ -55,6 +36,25 @@ export const remainingMsState = selector({
     }
     const remainingMs = durationMs - (currentTimeMs - startTimeMs);
     return remainingMs;
+  },
+});
+
+export const shouldRunTimerState = selector({
+  key: "shouldRunTimerState",
+  get: ({ get }) => {
+    const durationMs = get(durationMsState);
+    if (durationMs === 0) {
+      return false;
+    }
+    const startTimeMs = get(startTimeMsState);
+    if (startTimeMs === 0) {
+      return false;
+    }
+    const remainingMs = get(remainingMsState);
+    if (remainingMs !== undefined && remainingMs <= 0) {
+      return false;
+    }
+    return true;
   },
 });
 

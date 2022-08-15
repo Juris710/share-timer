@@ -16,7 +16,7 @@ interface ServerToClientEvents {
   timerPaused: (timerId: string, elapsedMs: number) => void;
   timerResetted: (timerId: string) => void;
 
-  requestFailed: (message: ErrorCodes) => void;
+  requestFailed: (errorCode: ErrorCodes) => void;
 }
 
 interface ClientToServerEvents {

@@ -15,6 +15,8 @@ import { Route, Routes } from "react-router-dom";
 import { TimerPage } from "./pages/Timer";
 import { Sockets } from "./components/Sockets";
 import { NotificationsProvider } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
+import { ErrorDialog } from "./components/ErrorDialog";
 
 function App() {
   const preferredColorScheme = useColorScheme();
@@ -35,39 +37,42 @@ function App() {
         withGlobalStyles
         theme={{ colorScheme }}
       >
-        <NotificationsProvider>
-          <AppShell
-            padding="md"
-            header={
-              <Header height={70} p="xs">
-                <Group position="apart" sx={{ height: "100%" }} px={20}>
-                  <Title order={1}>Share Timer</Title>
-                  <ActionIcon
-                    variant="default"
-                    onClick={() => toggleColorScheme()}
-                    size={30}
-                  >
-                    {colorScheme === "dark" ? (
-                      <IconSun size={16} />
-                    ) : (
-                      <IconMoonStars size={16} />
-                    )}
-                  </ActionIcon>
-                </Group>
-              </Header>
-            }
-          >
-            <Sockets />
-            <Routes>
-              <Route path="/timer/:timerId" element={<TimerPage />} />
-              <Route
-                path="/timer/:timerId/admin"
-                element={<TimerPage isAdmin />}
-              />
-              <Route path="*" element={<div>404</div>} />
-            </Routes>
-          </AppShell>
-        </NotificationsProvider>
+        <ModalsProvider>
+          <NotificationsProvider>
+            <AppShell
+              padding="md"
+              header={
+                <Header height={70} p="xs">
+                  <Group position="apart" sx={{ height: "100%" }} px={20}>
+                    <Title order={1}>Share Timer</Title>
+                    <ActionIcon
+                      variant="default"
+                      onClick={() => toggleColorScheme()}
+                      size={30}
+                    >
+                      {colorScheme === "dark" ? (
+                        <IconSun size={16} />
+                      ) : (
+                        <IconMoonStars size={16} />
+                      )}
+                    </ActionIcon>
+                  </Group>
+                </Header>
+              }
+            >
+              <Sockets />
+              <ErrorDialog />
+              <Routes>
+                <Route path="/timer/:timerId" element={<TimerPage />} />
+                <Route
+                  path="/timer/:timerId/admin"
+                  element={<TimerPage isAdmin />}
+                />
+                <Route path="*" element={<div>404</div>} />
+              </Routes>
+            </AppShell>
+          </NotificationsProvider>
+        </ModalsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );

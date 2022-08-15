@@ -5,6 +5,7 @@ import {
   currentTimeMsState,
   durationMsState,
   elapsedMsState,
+  errorCodeState,
   startTimeMsState,
   timerIdState,
 } from "../recoil";
@@ -18,6 +19,7 @@ export const Sockets: React.FC = () => {
   const setStartTimeMs = useSetRecoilState(startTimeMsState);
   const setCurrentTimeMs = useSetRecoilState(currentTimeMsState);
   const setElapsedMs = useSetRecoilState(elapsedMsState);
+  const setErrorCode = useSetRecoilState(errorCodeState);
 
   const timerJoined = useRecoilCallback(
     ({ snapshot }) =>
@@ -82,7 +84,7 @@ export const Sockets: React.FC = () => {
     socket.on("timerStarted", timerStarted);
     socket.on("timerPaused", timerPaused);
     socket.on("timerResetted", timerResetted);
-    //TODO:`requestFailed: (message: ErrorCodes) => void`
+    socket.on("requestFailed", (errorCode) => setErrorCode(errorCode));
   }, []);
   return <></>;
 };

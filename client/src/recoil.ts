@@ -1,5 +1,10 @@
 import { atom, selector } from "recoil";
 
+export const errorCodeState = atom<ErrorCodes | undefined>({
+  key: "errorCodeState",
+  default: undefined,
+});
+
 export const timerIdState = atom<string | undefined>({
   key: "timerIdState",
   default: undefined,

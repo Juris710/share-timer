@@ -1,13 +1,15 @@
 import React from "react";
 import { Button, Group } from "@mantine/core";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   currentTimeMsState,
   elapsedMsState,
   startTimeMsState,
+  timerStateState,
 } from "../../recoil";
 
 export const AdminButtons: React.FC = () => {
+  const timerState = useRecoilValue(timerStateState);
   const [startTimeMs, setStartTimeMs] = useRecoilState(startTimeMsState);
   const setElapsedMs = useSetRecoilState(elapsedMsState);
   const [currentTimeMs, setCurrentTimeMs] = useRecoilState(currentTimeMsState);
@@ -18,7 +20,7 @@ export const AdminButtons: React.FC = () => {
         onClick={() => {
           setStartTimeMs(Date.now());
         }}
-        disabled={startTimeMs !== 0}
+        disabled={timerState !== "idle" && timerState !== "paused"}
       >
         Start
       </Button>
@@ -28,7 +30,7 @@ export const AdminButtons: React.FC = () => {
           setStartTimeMs(0);
           setCurrentTimeMs(0);
         }}
-        disabled={startTimeMs === 0}
+        disabled={timerState !== "running"}
       >
         Pause
       </Button>

@@ -28,7 +28,7 @@ interface ClientToServerEvents {
   pauseTimer: (timerId: string, token: string) => void;
   resetTimer: (timerId: string, token: string) => void;
 
-  joinTimer: (timerId: string) => void;
+  joinTimer: (timerId: string, token?: string) => void;
 }
 
 interface InterServerEvents {}

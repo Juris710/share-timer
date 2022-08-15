@@ -68,8 +68,8 @@ io.on("connection", (socket) => {
   });
 
   // client
-  socket.on("joinTimer", (timerId: string) => {
-    const timerData = fetchTimerDataOrThrow(socket, timerId);
+  socket.on("joinTimer", (timerId: string, token) => {
+    const timerData = fetchTimerDataOrThrow(socket, timerId, token);
     if (timerData === undefined) {
       return;
     }

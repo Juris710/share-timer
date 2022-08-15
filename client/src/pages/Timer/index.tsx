@@ -28,10 +28,15 @@ export const TimerPage: React.FC<{ isAdmin?: boolean }> = ({
 }) => {
   const { timerId } = useParams();
   const setTimerId = useSetRecoilState(timerIdState);
+  const token = "token";
   useEffect(() => {
     setTimerId(timerId);
     if (timerId !== undefined) {
-      socket.emit("joinTimer", timerId);
+      if (isAdmin) {
+        socket.emit("joinTimer", timerId, token);
+      } else {
+        socket.emit("joinTimer", timerId);
+      }
     }
   }, [timerId]);
   const remainingMs = useRecoilValue(remainingMsState);

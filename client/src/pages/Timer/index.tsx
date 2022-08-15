@@ -54,9 +54,8 @@ export const TimerPage: React.FC<{ isAdmin?: boolean }> = ({
                   setCurrentTimeMs(0);
                   setElapsedMs(0);
                 }}
-                disabled={startTimeMs === 0}
               >
-                Stop
+                Reset
               </Button>
             </Group>
           )}

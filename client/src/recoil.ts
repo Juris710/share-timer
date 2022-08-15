@@ -1,5 +1,4 @@
 import { atom, selector } from "recoil";
-import { milliseconds2timerText } from "./utils";
 
 export const timerIdState = atom<string | undefined>({
   key: "timerIdState",
@@ -44,25 +43,6 @@ export const remainingMsState = selector({
   },
 });
 
-export const shouldRunTimerState = selector({
-  key: "shouldRunTimerState",
-  get: ({ get }) => {
-    const durationMs = get(durationMsState);
-    if (durationMs === 0) {
-      return false;
-    }
-    const startTimeMs = get(startTimeMsState);
-    if (startTimeMs === 0) {
-      return false;
-    }
-    const remainingMs = get(remainingMsState);
-    if (remainingMs === undefined || remainingMs <= 0) {
-      return false;
-    }
-    return true;
-  },
-});
-
 export const timerStateState = selector({
   key: "timerStateState",
   get: ({ get }) => {
@@ -83,19 +63,5 @@ export const timerStateState = selector({
       return "paused";
     }
     return "idle";
-  },
-});
-
-export const timerTextState = selector({
-  key: "timerTextState",
-  get: ({ get }) => {
-    const remainingMs = get(remainingMsState);
-    if (remainingMs === undefined) {
-      return milliseconds2timerText(0);
-    }
-    if (remainingMs > 0) {
-      return milliseconds2timerText(remainingMs);
-    }
-    return milliseconds2timerText(0);
   },
 });

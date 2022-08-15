@@ -11,9 +11,9 @@ export const startTimeMsState = atom({
   default: 0,
 });
 
-export const durationMsState = atom({
+export const durationMsState = atom<number | undefined>({
   key: "durationMsState",
-  default: 10 * 1000,
+  default: undefined,
 });
 
 export const elapsedMsState = atom({
@@ -30,6 +30,9 @@ export const remainingMsState = selector({
   key: "remainingMsState",
   get: ({ get }) => {
     const durationMs = get(durationMsState);
+    if (durationMs === undefined) {
+      return undefined;
+    }
     const elapsedMs = get(elapsedMsState);
     const startTimeMs = get(startTimeMsState);
     const currentTimeMs = get(currentTimeMsState);
@@ -53,7 +56,7 @@ export const shouldRunTimerState = selector({
       return false;
     }
     const remainingMs = get(remainingMsState);
-    if (remainingMs <= 0) {
+    if (remainingMs === undefined || remainingMs <= 0) {
       return false;
     }
     return true;
@@ -64,6 +67,9 @@ export const timerStateState = selector({
   key: "timerStateState",
   get: ({ get }) => {
     const remainingMs = get(remainingMsState);
+    if (remainingMs === undefined) {
+      return "loading";
+    }
     if (remainingMs <= 0) {
       return "finished";
     }
@@ -84,6 +90,9 @@ export const timerTextState = selector({
   key: "timerTextState",
   get: ({ get }) => {
     const remainingMs = get(remainingMsState);
+    if (remainingMs === undefined) {
+      return milliseconds2timerText(0);
+    }
     if (remainingMs > 0) {
       return milliseconds2timerText(remainingMs);
     }

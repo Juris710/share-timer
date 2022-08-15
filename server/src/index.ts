@@ -95,6 +95,7 @@ io.on("connection", (socket) => {
       return;
     }
     elapsedMs += Date.now() - startTimeMs;
+    startTimeMs = 0;
     io.sockets.in(timerId).emit("timerPaused", timerId, elapsedMs);
   });
   socket.on("resetTimer", (timerId: string, token: string) => {

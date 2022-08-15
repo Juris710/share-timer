@@ -19,9 +19,12 @@ const io = new Server<
     origin: ["http://127.0.0.1:5173"],
   },
 });
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  console.log(`User id ${socket.id} connected`);
+  socket.on("disconnect", () => {
+    console.log(`User id ${socket.id} DISCONNECTED`);
+  });
 });
 
 server.listen(3000, () => {

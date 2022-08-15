@@ -25,9 +25,6 @@ export const remainingMsState = selector({
   key: "remainingMsState",
   get: ({ get }) => {
     const durationMs = get(durationMsState);
-    if (durationMs === 0) {
-      return undefined;
-    }
     const elapsedMs = get(elapsedMsState);
     const startTimeMs = get(startTimeMsState);
     const currentTimeMs = get(currentTimeMsState);
@@ -51,7 +48,7 @@ export const shouldRunTimerState = selector({
       return false;
     }
     const remainingMs = get(remainingMsState);
-    if (remainingMs !== undefined && remainingMs <= 0) {
+    if (remainingMs <= 0) {
       return false;
     }
     return true;
@@ -62,9 +59,6 @@ export const timerFinishedState = selector({
   key: "timerFinishedState",
   get: ({ get }) => {
     const remainingMs = get(remainingMsState);
-    if (remainingMs === undefined) {
-      return false;
-    }
     return remainingMs <= 0;
   },
 });
@@ -73,10 +67,6 @@ export const timerTextState = selector({
   key: "timerTextState",
   get: ({ get }) => {
     const remainingMs = get(remainingMsState);
-    if (remainingMs === undefined) {
-      const durationMs = get(durationMsState);
-      return milliseconds2timerText(durationMs);
-    }
     if (remainingMs > 0) {
       return milliseconds2timerText(remainingMs);
     }

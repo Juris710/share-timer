@@ -130,6 +130,14 @@ io.on("connection", (socket) => {
     timerData.elapsedMs = 0;
     io.sockets.in(timerId).emit("timerResetted", timerId);
   });
+  socket.on("deleteTimer", (timerId, token) => {
+    const timerData = fetchTimerDataOrThrow(socket, timerId, token);
+    if (timerData === undefined) {
+      return;
+    }
+    delete timerDatas[timerId];
+    io.sockets.in(timerId).emit("timerDeleted", timerId);
+  });
 });
 
 server.listen(3000, () => {

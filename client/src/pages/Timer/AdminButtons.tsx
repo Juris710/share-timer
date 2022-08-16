@@ -1,9 +1,11 @@
 import React from "react";
-import { Button, Group } from "@mantine/core";
+import { Button, Group, Stack, Text } from "@mantine/core";
 import { useRecoilValue } from "recoil";
 import { timerIdState, timerStateState } from "../../recoil";
 import { socket } from "../../components/Sockets";
 import { localStorageKeyOfTimerToken } from "../../utils";
+import { IconTrash } from "@tabler/icons";
+import { openConfirmModal } from "@mantine/modals";
 
 export const AdminButtons: React.FC = () => {
   const timerId = useRecoilValue(timerIdState);
@@ -17,22 +19,49 @@ export const AdminButtons: React.FC = () => {
   }
 
   return (
-    <Group position="center">
-      <Button
-        onClick={() => socket.emit("startTimer", timerId, token)}
-        disabled={timerState !== "idle" && timerState !== "paused"}
-      >
-        Start
-      </Button>
-      <Button
-        onClick={() => socket.emit("pauseTimer", timerId, token)}
-        disabled={timerState !== "running"}
-      >
-        Pause
-      </Button>
-      <Button onClick={() => socket.emit("resetTimer", timerId, token)}>
-        Reset
-      </Button>
-    </Group>
+    <Stack>
+      <Group position="center">
+        <Button
+          onClick={() => socket.emit("startTimer", timerId, token)}
+          disabled={timerState !== "idle" && timerState !== "paused"}
+        >
+          Start
+        </Button>
+        <Button
+          onClick={() => socket.emit("pauseTimer", timerId, token)}
+          disabled={timerState !== "running"}
+        >
+          Pause
+        </Button>
+        <Button onClick={() => socket.emit("resetTimer", timerId, token)}>
+          Reset
+        </Button>
+      </Group>
+      <Group position="center">
+        <Button
+          color="red"
+          leftIcon={<IconTrash />}
+          onClick={() => {
+            openConfirmModal({
+              title: "確認",
+              children: (
+                <Stack>
+                  <Text>このタイマーを削除してもよろしいですか?</Text>
+                  <Text>この操作は取り消せません。</Text>
+                </Stack>
+              ),
+              labels: { confirm: "削除", cancel: "キャンセル" },
+              confirmProps: { color: "red" },
+              onConfirm: () => {
+                socket.emit("deleteTimer", timerId, token);
+                localStorage.removeItem(localStorageKeyOfTimerToken(timerId));
+              },
+            });
+          }}
+        >
+          Delete this timer
+        </Button>
+      </Group>
+    </Stack>
   );
 };

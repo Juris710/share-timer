@@ -15,6 +15,7 @@ interface ServerToClientEvents {
   ) => void;
   timerPaused: (timerId: string, elapsedMs: number) => void;
   timerResetted: (timerId: string) => void;
+  timerDeleted: (timer: string) => void;
 
   requestFailed: (errorCode: ErrorCode) => void;
 }
@@ -27,6 +28,7 @@ interface ClientToServerEvents {
   startTimer: (timerId: string, token: string) => void;
   pauseTimer: (timerId: string, token: string) => void;
   resetTimer: (timerId: string, token: string) => void;
+  deleteTimer: (timerId: string, token: string) => void;
 
   joinTimer: (timerId: string, token?: string) => void;
 }

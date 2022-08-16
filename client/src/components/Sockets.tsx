@@ -1,4 +1,6 @@
+import { showNotification } from "@mantine/notifications";
 import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilCallback, useSetRecoilState } from "recoil";
 import { io, Socket } from "socket.io-client";
 import {
@@ -20,11 +22,13 @@ export const errorMessages: Record<ErrorCode, string> = {
 
 export const Sockets: React.FC = () => {
   const initialized = useRef(false);
+  const navigate = useNavigate();
   const setDurationMs = useSetRecoilState(durationMsState);
   const setStartTimeMs = useSetRecoilState(startTimeMsState);
   const setCurrentTimeMs = useSetRecoilState(currentTimeMsState);
   const setElapsedMs = useSetRecoilState(elapsedMsState);
   const setErrorCode = useSetRecoilState(errorMessageState);
+  const setTimerId = useSetRecoilState(timerIdState);
 
   const timerJoined = useRecoilCallback(
     ({ snapshot }) =>
@@ -80,6 +84,22 @@ export const Sockets: React.FC = () => {
         setElapsedMs(0);
       }
   );
+  const timerDeleted = useRecoilCallback(
+    ({ snapshot }) =>
+      async (timerId: string) => {
+        const currentTimerId = await snapshot.getPromise(timerIdState);
+        if (currentTimerId !== timerId) {
+          return;
+        }
+        setStartTimeMs(0);
+        setCurrentTimeMs(0);
+        setElapsedMs(0);
+        setDurationMs(undefined);
+        setTimerId(undefined);
+        navigate("/");
+        showNotification({ message: "タイマーが削除されました" });
+      }
+  );
   useEffect(() => {
     if (initialized.current) {
       return;
@@ -89,6 +109,7 @@ export const Sockets: React.FC = () => {
     socket.on("timerStarted", timerStarted);
     socket.on("timerPaused", timerPaused);
     socket.on("timerResetted", timerResetted);
+    socket.on("timerDeleted", timerDeleted);
     socket.on("requestFailed", (errorCode) => {
       setErrorCode(errorMessages[errorCode]);
     });

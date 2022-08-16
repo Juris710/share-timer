@@ -15,6 +15,7 @@ import {
   localStorageKeyOfTimerToken,
   milliseconds2timerText,
 } from "../../utils";
+import { AdminUrlDisplay } from "./AdminUrlDisplay";
 
 export const TimerPage: React.FC<{ isAdmin?: boolean }> = ({
   isAdmin = false,
@@ -51,7 +52,6 @@ export const TimerPage: React.FC<{ isAdmin?: boolean }> = ({
       setTimerText(newValue);
     }
   }, [timerText, remainingMs]);
-
   return (
     <Container>
       <FinishNotifier />
@@ -62,6 +62,7 @@ export const TimerPage: React.FC<{ isAdmin?: boolean }> = ({
             <Title order={1}>{timerText}</Title>
           </Center>
           {isAdmin && <AdminButtons />}
+          {isAdmin && <AdminUrlDisplay />}
         </Stack>
       </Center>
     </Container>

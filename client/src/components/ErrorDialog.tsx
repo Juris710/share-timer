@@ -12,10 +12,8 @@ const errorMessages: Record<ErrorCode, string> = {
 export const ErrorDialog: React.FC = () => {
   const errorCode = useRecoilValue(errorCodeState);
   useEffect(() => {
-    console.log(errorCode);
     if (errorCode !== undefined) {
       const message = errorMessages[errorCode];
-      console.log(message);
       openModal({
         title: "エラー",
         children: <Text>{message}</Text>,

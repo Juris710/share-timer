@@ -3,12 +3,16 @@ import { Button, Group } from "@mantine/core";
 import { useRecoilValue } from "recoil";
 import { timerIdState, timerStateState } from "../../recoil";
 import { socket } from "../../components/Sockets";
+import { localStorageKeyOfTimerToken } from "../../utils";
 
 export const AdminButtons: React.FC = () => {
   const timerId = useRecoilValue(timerIdState);
   const timerState = useRecoilValue(timerStateState);
-  const token = "token";
   if (timerId === undefined) {
+    return <></>;
+  }
+  const token = localStorage.getItem(localStorageKeyOfTimerToken(timerId));
+  if (typeof token !== "string") {
     return <></>;
   }
 

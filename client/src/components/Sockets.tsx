@@ -12,9 +12,10 @@ import {
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
   import.meta.env.DEV ? io("http://localhost:3000") : io();
-const errorMessages: Record<ErrorCode, string> = {
+export const errorMessages: Record<ErrorCode, string> = {
   "invalid-timer-id": "指定されたタイマーは存在しません。",
   "invalid-token": "あなたにはこのタイマーを操作する権限がありません。",
+  "unexpected-error": "想定外のエラーです。",
 };
 
 export const Sockets: React.FC = () => {

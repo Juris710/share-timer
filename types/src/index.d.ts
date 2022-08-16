@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-type ErrorCode = "invalid-timer-id" | "invalid-token";
+type ErrorCode = "invalid-timer-id" | "invalid-token" | "unexpected-error";
 interface ServerToClientEvents {
   timerJoined: (
     timerId: string,

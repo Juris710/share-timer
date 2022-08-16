@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import express from "express";
 import http from "http";
 import path from "path";
@@ -25,20 +26,7 @@ type TimerData = {
   durationMs: number;
   token: string;
 };
-const timerDatas: Record<string, TimerData | undefined> = {
-  "timer-1": {
-    startTimeMs: 0,
-    elapsedMs: 0,
-    durationMs: 10 * 1000,
-    token: "token",
-  },
-  "timer-2": {
-    startTimeMs: 0,
-    elapsedMs: 0,
-    durationMs: 5 * 1000,
-    token: "token",
-  },
-};
+const timerDatas: Record<string, TimerData | undefined> = {};
 function fetchTimerDataOrThrow(
   socket: Socket<
     ClientToServerEvents,
@@ -81,6 +69,31 @@ io.on("connection", (socket) => {
       timerData.startTimeMs,
       timerData.elapsedMs
     );
+  });
+
+  function generateTimerId(): string {
+    for (;;) {
+      const timerId = `timer-${crypto.randomBytes(8).toString("hex")}`;
+      if (timerDatas[timerId] === undefined) {
+        return timerId;
+      }
+    }
+  }
+
+  socket.on("createTimer", (durationMs, callback) => {
+    if (durationMs === 0) {
+      socket.emit("requestFailed", "unexpected-error");
+      return;
+    }
+    const timerId = generateTimerId();
+    const token = crypto.randomBytes(24).toString("base64");
+    timerDatas[timerId] = {
+      durationMs,
+      token,
+      startTimeMs: 0,
+      elapsedMs: 0,
+    };
+    callback(timerId, token);
   });
 
   // admin

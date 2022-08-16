@@ -10,3 +10,7 @@ export function milliseconds2timerText(ms: number): string {
     .toString()
     .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 }
+
+export function localStorageKeyOfTimerToken(timerId: string): string {
+  return `share-timer-timer-token-${timerId}`;
+}

@@ -15,9 +15,9 @@ export const startTimeMsState = atom({
   default: 0,
 });
 
-export const durationMsState = atom<number | undefined>({
+export const durationMsState = atom({
   key: "durationMsState",
-  default: undefined,
+  default: 0,
 });
 
 export const elapsedMsState = atom({

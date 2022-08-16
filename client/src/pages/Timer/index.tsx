@@ -61,8 +61,12 @@ export const TimerPage: React.FC<{ isAdmin?: boolean }> = ({
           <Center>
             <Title order={1}>{timerText}</Title>
           </Center>
-          {isAdmin && <AdminButtons />}
-          {isAdmin && <AdminUrlDisplay />}
+          {isAdmin && (
+            <>
+              <AdminButtons />
+              <AdminUrlDisplay />
+            </>
+          )}
         </Stack>
       </Center>
     </Container>

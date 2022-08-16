@@ -8,10 +8,11 @@ import {
   Title,
   Group,
   ActionIcon,
+  UnstyledButton,
 } from "@mantine/core";
 import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import { IconSun, IconMoonStars } from "@tabler/icons";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { TimerPage } from "./pages/Timer";
 import { Sockets } from "./components/Sockets";
 import { NotificationsProvider } from "@mantine/notifications";
@@ -20,6 +21,7 @@ import { ErrorDialog } from "./components/ErrorDialog";
 import { HomePage } from "./pages/Home";
 
 function App() {
+  const navigate = useNavigate();
   const preferredColorScheme = useColorScheme();
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "share-timer-color-scheme",
@@ -45,7 +47,9 @@ function App() {
               header={
                 <Header height={70} p="xs">
                   <Group position="apart" sx={{ height: "100%" }} px={20}>
-                    <Title order={1}>Share Timer</Title>
+                    <UnstyledButton onClick={() => navigate("/")}>
+                      <Title order={1}>Share Timer</Title>
+                    </UnstyledButton>
                     <ActionIcon
                       variant="default"
                       onClick={() => toggleColorScheme()}

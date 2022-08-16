@@ -17,6 +17,7 @@ import { Sockets } from "./components/Sockets";
 import { NotificationsProvider } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import { ErrorDialog } from "./components/ErrorDialog";
+import { HomePage } from "./pages/Home";
 
 function App() {
   const preferredColorScheme = useColorScheme();
@@ -63,6 +64,7 @@ function App() {
               <Sockets />
               <ErrorDialog />
               <Routes>
+                <Route path="/" element={<HomePage />} />
                 <Route path="/timer/:timerId" element={<TimerPage />} />
                 <Route
                   path="/timer/:timerId/admin"

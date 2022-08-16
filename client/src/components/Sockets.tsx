@@ -5,13 +5,17 @@ import {
   currentTimeMsState,
   durationMsState,
   elapsedMsState,
-  errorCodeState,
+  errorMessageState,
   startTimeMsState,
   timerIdState,
 } from "../recoil";
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
   import.meta.env.DEV ? io("http://localhost:3000") : io();
+const errorMessages: Record<ErrorCode, string> = {
+  "invalid-timer-id": "指定されたタイマーは存在しません。",
+  "invalid-token": "あなたにはこのタイマーを操作する権限がありません。",
+};
 
 export const Sockets: React.FC = () => {
   const initialized = useRef(false);
@@ -19,7 +23,7 @@ export const Sockets: React.FC = () => {
   const setStartTimeMs = useSetRecoilState(startTimeMsState);
   const setCurrentTimeMs = useSetRecoilState(currentTimeMsState);
   const setElapsedMs = useSetRecoilState(elapsedMsState);
-  const setErrorCode = useSetRecoilState(errorCodeState);
+  const setErrorCode = useSetRecoilState(errorMessageState);
 
   const timerJoined = useRecoilCallback(
     ({ snapshot }) =>
@@ -84,7 +88,9 @@ export const Sockets: React.FC = () => {
     socket.on("timerStarted", timerStarted);
     socket.on("timerPaused", timerPaused);
     socket.on("timerResetted", timerResetted);
-    socket.on("requestFailed", (errorCode) => setErrorCode(errorCode));
+    socket.on("requestFailed", (errorCode) => {
+      setErrorCode(errorMessages[errorCode]);
+    });
   }, []);
   return <></>;
 };

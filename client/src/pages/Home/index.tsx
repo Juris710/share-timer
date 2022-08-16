@@ -12,7 +12,7 @@ export const HomePage: React.FC = () => {
   const setErrorMessage = useSetRecoilState(errorMessageState);
   const createTimer = useRecoilCallback(({ snapshot }) => async () => {
     const durationMs = await snapshot.getPromise(durationMsState);
-    if (durationMs === 0) {
+    if (durationMs === undefined || durationMs === 0) {
       setErrorMessage("0秒のタイマーは作成できません。");
       return;
     }

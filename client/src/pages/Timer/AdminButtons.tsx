@@ -17,7 +17,7 @@ export const AdminButtons: React.FC = () => {
   }
 
   return (
-    <Group>
+    <Group position="center">
       <Button
         onClick={() => socket.emit("startTimer", timerId, token)}
         disabled={timerState !== "idle" && timerState !== "paused"}

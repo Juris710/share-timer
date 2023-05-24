@@ -10,6 +10,7 @@ if (process.env["NODE_ENV"] === "production") {
   app.use((_, res) => {
     res.sendFile(path.resolve(__dirname, "../dist_client/index.html"));
   });
+  app.set("trust proxy", 1);
 }
 const server = http.createServer(app);
 

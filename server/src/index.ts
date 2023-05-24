@@ -7,6 +7,9 @@ import { Server, Socket } from "socket.io";
 const app = express();
 if (process.env["NODE_ENV"] === "production") {
   app.use("/", express.static(path.resolve(__dirname, "../dist_client")));
+  app.use((_, res) => {
+    res.sendFile(path.resolve(__dirname, "../dist_client/index.html"));
+  });
 }
 const server = http.createServer(app);
 
